@@ -15,14 +15,20 @@ function Reviews() {
     setResult(null);
 
     try {
+
+    //   const token = localStorage.getItem("token");
+
       const res = await fetch(`${API_BASE_URL}/reviews/sentiment`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify({ text }),
       });
 
       if (!res.ok) throw new Error("Failed to analyze sentiment");
       const data = await res.json();
+      console.log("Sentiment result:", data);
       setResult(data);
     } catch (err) {
         console.log(err);
@@ -59,26 +65,49 @@ function Reviews() {
       {error && <p className="mt-6 text-red-500">{error}</p>}
 
       {result && (
-        <div className="mt-6 bg-white p-5 rounded-lg shadow-md text-center max-w-md w-full">
-          <p className="text-lg">
-            Sentiment:{" "}
-            <span
-              className={
-                result.sentiment === "Positive"
-                  ? "text-green-600 font-semibold"
-                  : result.sentiment === "Negative"
-                  ? "text-red-600 font-semibold"
-                  : "text-yellow-600 font-semibold"
-              }
-            >
-              {result.sentiment}
-            </span>
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Confidence: {Math.round(result.confidence * 100)}%
-          </p>
-        </div>
-      )}
+  <div className="mt-6 p-4 border rounded-lg bg-gray-50 shadow-sm">
+    <h3 className="text-lg font-semibold mb-2">Sentiment Analysis</h3>
+    <p className="text-gray-700">
+      <strong>Sentiment:</strong>{" "}
+      <span
+        className={
+          result.label === "positive"
+            ? "text-green-600"
+            : result.label === "negative"
+            ? "text-red-600"
+            : "text-gray-600"
+        }
+      >
+        {result.label}
+      </span>
+    </p>
+    <p className="text-gray-700 mt-1">
+      <strong>Confidence:</strong> {(result.confidence * 100).toFixed(0)}%
+    </p>
+    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+  <div
+    className={`h-2 rounded-full ${
+      result.label === "positive"
+        ? "bg-green-500"
+        : result.label === "negative"
+        ? "bg-red-500"
+        : "bg-gray-500"
+    }`}
+    style={{ width: `${result.confidence * 100}%` }}
+  ></div>
+</div>
+
+    {result.explanation && (
+      <p className="text-sm text-gray-500 mt-2">
+        Key words: {result.explanation.join(", ")}
+      </p>
+    )}
+    {result.note && (
+      <p className="text-xs text-gray-400 italic mt-2">{result.note}</p>
+    )}
+  </div>
+)}
+
     </div>
   );
 }
