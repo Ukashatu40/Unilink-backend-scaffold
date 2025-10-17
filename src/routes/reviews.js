@@ -9,7 +9,8 @@ const router = express.Router();
 
 // POST /reviews/sentiment
 // body: { text: string }
-router.post('/sentiment', auth, async (req, res) => {
+// router.post('/sentiment', auth, async (req, res) => {
+router.post('/sentiment', async (req, res) => {
 try {
 const { text } = req.body;
 if (!text) return res.status(400).json({ message: 'text is required' });
