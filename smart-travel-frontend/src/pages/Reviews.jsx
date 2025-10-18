@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config";
+import SentimentHistory from "../components/SentimentHistory";
 
 function Reviews() {
   const [text, setText] = useState("");
@@ -107,6 +108,7 @@ function Reviews() {
     )}
   </div>
 )}
+      <SentimentHistory />
 
     </div>
   );
