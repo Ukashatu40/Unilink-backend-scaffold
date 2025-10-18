@@ -1,6 +1,7 @@
 // File: src/routes/weather.js
 const express = require('express');
 const axios = require('axios');
+const SearchHistory = require("../models/SearchHistory");
 
 
 const router = express.Router();
@@ -25,6 +26,9 @@ weather: d.weather[0].description,
 humidity: d.main.humidity,
 wind_m_s: d.wind.speed
 };
+
+// Save to search history
+await SearchHistory.create({ city: out.city, weather: out });
 
 
 res.json(out);
