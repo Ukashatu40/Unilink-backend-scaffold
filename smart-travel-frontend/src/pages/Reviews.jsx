@@ -17,12 +17,13 @@ function Reviews() {
 
     try {
 
-    //   const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       const res = await fetch(`${API_BASE_URL}/reviews/sentiment`, {
         method: "POST",
-        headers: { 
+        headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ text }),
       });
