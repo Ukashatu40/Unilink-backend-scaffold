@@ -32,7 +32,6 @@ app.use('/weather', weatherRoutes);
 app.use('/traffic', trafficRoutes);
 app.use('/reviews', reviewsRoutes);
 
-
 app.get('/', (req, res) => res.json({ status: 'ok', service: 'Smart Travel Backend' }));
 
 
