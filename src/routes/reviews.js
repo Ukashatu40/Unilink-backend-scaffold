@@ -10,8 +10,8 @@ const router = express.Router();
 
 // POST /reviews/sentiment
 // body: { text: string }
-// router.post('/sentiment', auth, async (req, res) => {
-    router.post("/sentiment", async (req, res) => {
+router.post('/sentiment', auth, async (req, res) => {
+    // router.post("/sentiment", async (req, res) => {
         try {
           const { text } = req.body;
           if (!text) return res.status(400).json({ message: "text is required" });
@@ -33,6 +33,7 @@ const router = express.Router();
       
           // Save to DB
           const saved = await ReviewAnalysis.create({
+            userId: req.user.userId,
             text,
             sentiment: result.label,
             confidence: result.confidence,
@@ -62,6 +63,19 @@ router.get("/history", async (req, res) => {
       res.status(500).json({ message: "Failed to fetch history" });
     }
   });
+
+// GET /reviews/history
+// router.get('/history', auth, async (req, res) => {
+//     try {
+//       const reviews = await ReviewAnalysis.find({ userId: req.user.userId }).sort({
+//         createdAt: -1,
+//       });
+//       res.json(reviews);
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).json({ message: 'Failed to fetch review history' });
+//     }
+//   });
   
 
 
