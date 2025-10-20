@@ -48,15 +48,12 @@ router.post('/sentiment', auth, async (req, res) => {
       });
 
 // GET /reviews/history
-router.get("/history", async (req, res) => {
+router.get("/history", auth, async (req, res) => {
     try {
-      const ReviewAnalysis = require("../models/ReviewAnalysis");
-  
+
       // You can later filter by userId if auth is added
-      const history = await ReviewAnalysis.find()
-        .sort({ createdAt: -1 }) // newest first
-        .limit(20); // limit to 20 recent results
-  
+      const history = await ReviewAnalysis.find({ userId: req.user.userId }).sort({ createdAt: -1 }).limit(50);
+
       res.json(history);
     } catch (err) {
       console.error("Failed to fetch history:", err.message);

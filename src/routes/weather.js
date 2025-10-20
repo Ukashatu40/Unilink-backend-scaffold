@@ -2,12 +2,13 @@
 const express = require('express');
 const axios = require('axios');
 const SearchHistory = require("../models/SearchHistory");
+const auth = require('../middleware/auth');
 
 
 const router = express.Router();
 
 
-router.get('/:city', async (req, res) => {
+router.get('/:city', auth, async (req, res) => {
 try {
 const { city } = req.params;
 const apiKey = process.env.OPENWEATHER_API_KEY;
@@ -28,7 +29,7 @@ wind_m_s: d.wind.speed
 };
 
 // Save to search history
-await SearchHistory.create({ city: out.city, weather: out });
+await SearchHistory.create({userId: req.user.userId, city, weather: out });
 
 
 res.json(out);
