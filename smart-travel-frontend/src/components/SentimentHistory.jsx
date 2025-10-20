@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
 
 export default function SentimentHistory() {
   const [history, setHistory] = useState([]);
@@ -8,7 +9,10 @@ export default function SentimentHistory() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch("http://localhost:4000/reviews/history");
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_BASE_URL}/reviews/history`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await res.json();
         setHistory(data);
       } catch (err) {
@@ -54,7 +58,9 @@ export default function SentimentHistory() {
               >
                 {item.sentiment}
               </td>
-              <td className="py-2 px-3 border-b">{(item.confidence * 100).toFixed(0)}%</td>
+              <td className="py-2 px-3 border-b">
+                {(item.confidence * 100).toFixed(0)}%
+              </td>
               <td className="py-2 px-3 border-b">
                 {item.explanation.join(", ") || "-"}
               </td>
