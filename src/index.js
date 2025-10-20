@@ -25,12 +25,14 @@ const authRoutes = require('./routes/auth');
 const weatherRoutes = require('./routes/weather');
 const trafficRoutes = require('./routes/traffic');
 const reviewsRoutes = require('./routes/reviews');
+const searchHistoryRoutes = require("./routes/searchHistory");
 
 
 app.use('/auth', authRoutes);
 app.use('/weather', weatherRoutes);
 app.use('/traffic', trafficRoutes);
 app.use('/reviews', reviewsRoutes);
+app.use("/search-history", searchHistoryRoutes)
 
 app.get('/', (req, res) => res.json({ status: 'ok', service: 'Smart Travel Backend' }));
 
