@@ -2,10 +2,21 @@ import { useEffect, useState } from "react";
 import { getSearchHistory } from "../api/searchHistory";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { downloadExport, saveBlob } from "../api/export";
 
 const SearchHistoryTable = ({ token }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleExport = async (type) => {
+    try {
+      const blob = await downloadExport("search-history", type, token);
+      saveBlob(blob, `search_history.${type}`);
+    } catch (err) {
+      console.error(err);
+      alert("Export failed: " + err.message);
+    }
+  };
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -28,6 +39,23 @@ const SearchHistoryTable = ({ token }) => {
 
   return (
     <div className="mt-6 overflow-x-auto">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-semibold">Recent Searches</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleExport("csv")}
+            className="px-3 py-1 bg-red-500 rounded text-white font-semibold"
+          >
+            Export CSV
+          </button>
+          <button
+            onClick={() => handleExport("pdf")}
+            className="px-3 py-1 bg-green-500 rounded text-white font-semibold"
+          >
+            Export PDF
+          </button>
+        </div>
+      </div>
       <motion.table
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
+import { downloadExport, saveBlob } from "../api/export";
 
 export default function SentimentHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  const handleExport = async (type) => {
+    try {
+      const blob = await downloadExport("sentiment-history", type, token);
+      saveBlob(blob, `sentiment_history.${type}`);
+    } catch (err) {
+      console.error(err);
+      alert("Export failed: " + err.message);
+    }
+  };
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -30,7 +43,24 @@ export default function SentimentHistory() {
 
   return (
     <div className="mt-8 p-4 bg-white rounded-2xl shadow">
-      <h2 className="text-xl font-semibold mb-4">Sentiment History</h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xl font-semibold mb-4">Sentiment History</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleExport("csv")}
+            className="px-3 py-1 bg-red-500 rounded text-white font-semibold"
+          >
+            Export CSV
+          </button>
+          <button
+            onClick={() => handleExport("pdf")}
+            className="px-3 py-1 bg-green-500 rounded text-white font-semibold"
+          >
+            Export PDF
+          </button>
+        </div>
+      </div>
+
       <table className="w-full text-left border-collapse">
         <thead>
           <tr className="bg-gray-100 text-gray-700">
