@@ -24,3 +24,33 @@ Quick scaffold for the Node/Express backend. Features:
 
 
 // End of scaffold
+# Smart Travel Insights
+
+## Overview
+Full stack app: React (Vite) frontend, Node/Express backend, FastAPI ML microservice, MongoDB.
+
+## Local dev (backend)
+cd backend
+cp .env.example .env
+# set OPENWEATHER_API_KEY, MONGODB_URI, JWT_SECRET, FASTAPI_URL
+npm install
+npm run dev
+
+## Local dev (frontend)
+cd frontend
+cp .env.example .env
+# set VITE_API_BASE_URL to http://localhost:4000
+npm install
+npm run dev
+
+## Export endpoints
+GET /export/search-history?format=csv|pdf (protected)
+GET /export/sentiment-history?format=csv|pdf (protected)
+Use Authorization: Bearer <token>
+
+## Docker
+docker-compose up --build
+
+## Tests
+cd backend
+npm test

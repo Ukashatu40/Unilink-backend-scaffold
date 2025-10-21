@@ -1,6 +1,6 @@
 // tests/export.test.js
 const request = require('supertest');
-const app = require('../index'); // adjust if your index exports the app; otherwise spin up server differently
+const app = require('../src/index'); // adjust if your index exports the app; otherwise spin up server differently
 // For a quick test you can export 'app' from src/index.js: module.exports = app;
 
 describe('Export endpoints (protected)', () => {

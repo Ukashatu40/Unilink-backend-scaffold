@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        env:
+          MONGODB_URI: mongodb://127.0.0.1:27017/testdb
+          JWT_SECRET: testsecret
+        run: |
+          sudo apt-get update && sudo apt-get install -y mongodb
+          sudo service mongodb start || sudo systemctl start mongodb
+          sleep 5
+          npm test
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
