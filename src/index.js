@@ -26,6 +26,7 @@ const weatherRoutes = require('./routes/weather');
 const trafficRoutes = require('./routes/traffic');
 const reviewsRoutes = require('./routes/reviews');
 const searchHistoryRoutes = require("./routes/searchHistory");
+const exportRoutes = require('./routes/export');
 
 
 app.use('/auth', authRoutes);
@@ -33,9 +34,12 @@ app.use('/weather', weatherRoutes);
 app.use('/traffic', trafficRoutes);
 app.use('/reviews', reviewsRoutes);
 app.use("/search-history", searchHistoryRoutes)
+app.use('/export', exportRoutes);
 
 app.get('/', (req, res) => res.json({ status: 'ok', service: 'Smart Travel Backend' }));
 
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+module.exports = app;
