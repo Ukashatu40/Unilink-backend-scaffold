@@ -1,4 +1,3 @@
-// File: README.md
 # Smart Travel Insights — Backend Scaffold
 
 
